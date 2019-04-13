@@ -1,0 +1,20 @@
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/l3kernel/l3pdfmode.def)))
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!
+! Fatal fontspec error: "cannot-use-pdftex"
+! 
+! The fontspec package requires either XeTeX or LuaTeX.
+! 
+! You must change your typesetting engine to, e.g., "xelatex" or
+! "lualatex"instead of "latex" or "pdflatex".
+! 
+! See the fontspec documentation for further information.
+! 
+! For immediate help type H <return>.
+!...............................................  
+                                                  
+l.44 \msg_fatal:nn {fontspec} {cannot-use-pdftex}
+                                                 
+? 

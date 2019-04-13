@@ -1,0 +1,471 @@
+\chapter{การพัฒนาระบบ}
+หลังจากที่ได้มีการเตรียมความพร้อมสำหรับการพัฒนาในด้านต่าง ไม่ว่าจะเป็นที่มาและความสำคัญของปัญหา เทคโนโลยีที่มีความเหมาะสมกับระบบ และการออกแบบระบบการทำงานรวมไปถึงโครงสร้างของข้อมูล ในบทนี้จะเป็นการพูดถึงการสร้างระบบที่ได้มีการออกแบบไว้ในบทที่แล้วจะถูกนำเสนอในบทนี้ ซึ่งจะอธิบายถึงตัวอย่างการทำงานของแอปพลิเคชันดังนี้
+		\section{โครงสร้างของการสร้างหน้า MainActivity}
+		\begin{figure}[H]
+			{\setstretch{1.0}\begin{lstlisting}
+Scan scan;
+Addfood addfood;
+Dashboard dash;
+Pagerdash pagerdash;
+BottomNavigationView nv;
+				\end{lstlisting}}
+			\caption{ตัวแปรในคลาส MainActivity}
+			\label{Fig:MainActivity}
+		\end{figure}
+		จากภาพที่ \ref{Fig:MainActivity} ตัวแปรที่ประกาศขึ้นเพื่อใช้ในการทำงานของคลาส MainActivity สามารถอธิบายได้ดังนี้
+		\begin{itemize}[label={--}]
+			\item บรรทัดที่ 1 ตัวแปร scan ใช้แสดงผลหน้าสแกน
+			\item บรรทัดที่ 2 ตัวแปร addfood ใช้แสดงผลหน้าจอเพิ่มอาหารโดยสมาชิก  
+			\item บรรทัดที่ 3 ตัวแปร dash ใส้แสดงผลหน้าจอแดชบอร์ด
+			\item บรรทัดที่ 4 ตัวแปร pagerdash เป็นตัวแปลงหน้าจอเมื่อผู้ใช้เลือก Tab Week หรือ Tab Month
+			\item บรรทัดที่ 5 ตัวแปร nv เป็นที่เก็บเมนู Scan และ Myfood มีไว้ให้สมาชิกเลือก
+		
+		\end{itemize}
+
+		
+
+		\begin{figure}[H]
+			{\setstretch{1.0}\begin{lstlisting}
+        @Override
+ public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+     switch (menuItem.getItemId()) {
+         case R.id.cam:
+             if (staurselect != "scan") {
+                 ft = getSupportFragmentManager().beginTransaction().replace(R.id.Framefag, scan);
+                 ft.commit();
+                 staurselect = "scan";
+             }
+             break;
+         case R.id.dash:
+             if (staurselect != "dashbord" ) {
+                 Calories = Sugar = Sodium = Fat = submit = null;
+                 ft = getSupportFragmentManager().beginTransaction().replace(R.id.Framefag, new Pagerdash().newInstance(Calories,Sugar,Sodium,Fat,submit));
+                 ft.commit();
+                 staurselect = "dashbord";
+             }
+             break;
+         case  R.id.cart:
+             if (staurselect != "Addfood"){
+                 ft = getSupportFragmentManager().beginTransaction().replace(R.id.Framefag, addfood );
+                 ft.commit();
+                 staurselect = "Addfood";
+             }
+             break;
+     }
+     return true;
+ }
+
+				\end{lstlisting}}
+			\caption{โค้ดส่วนที่ใช้ในการสร้างเมนูนำทางหลักภายในคลาส MainActivity}
+			\label{Fig:MainActivity2}
+		\end{figure}
+\newpage
+		จากภาพที่ \ref{Fig:MainActivity2} สามารถอธิบายการทำงานโค้ดส่วนที่ใช้เมนูนำทางหลักภายในคลาส MainActivity ได้ดังนี้
+		\begin{itemize}[label={--}]
+			\item บรรทัดที่ 1     เป็นการเพิ่มการดักจับอีเวนต์ (Event) เพื่อสลับหน้าจอการแสดงผลที่เกิดขึ้นเมื่อผู้ใช้กดที่เมนูนำทาง
+			\item บรรทัดที่ 2-3   เป็นการเรียกใช้เมธอดชันจากคลาสที่ extends มา
+			\item บรรทัดที่ 4     เป็นการรับ ID 
+			\item บรรทัดที่ 5    	เป็นการระบุ ID ไปยังไอคอน cam ที่ไฟล์ xml
+			\item บรรทัดที่ 6-9 	เป็นการแสดงหน้าจอสแกนและป้องกันการกดหน้าสแกนซ้ำ
+			\item บรรทัดที่ 10 		เป็นการหยุดการทำงานของ case เพื่อไม่ให้ทำงานต่อเนื่อง 
+			\item บรรทัดที่ 11	  เป็นการระบุไปยังไอคอน dash ที่ไฟล์ xml
+			\item บรรทัดที่ 12-17 เป็นการแสดงหน้าจอแดชบอร์ดและป้องกันการกดหน้าสแกนซ้ำ
+			\item บรรทัดที่ 18    เป็นการหยุดการทำงานของ case เพื่อไม่ให้ทำงานต่อเนื่อง 
+			\item บรรทัดที่ 19    เป็นการระบุ ID ไปยังไอคอน cart ที่ไฟล์ xml
+			\item บรรทัดที่ 20-24 เป็นการแสดงหน้าจอเพิ่มอาหารและป้องกันการกดหน้าสแกนซ้ำ
+			\item บรรทัดที่ 25-29 เป็นการหยุดการทำงานของ case เพื่อไม่ให้ทำงานต่อเนื่องและจบการทำงานของเมนูนำทาง 
+		\end{itemize}
+	
+	\section{โครงสร้างของการสร้างหน้า Main2Activity}
+	\begin{figure}[H]
+		{\setstretch{1.0}\begin{lstlisting}
+Button btnSignOut;
+FirebaseAuth auth;
+FirebaseUser user;
+ProgressDialog PD;
+	
+			\end{lstlisting}}
+		\caption{ตัวแปรในคลาส Main2Activity}
+		\label{Fig:Main2Activity}
+	\end{figure}
+	\newpage
+	จากภาพที่ \ref{Fig:Main2Activity} ตัวแปรที่ประกาศขึ้นเพื่อใช้ในการทำงานของคลาส FeedFragment สามารถอธิบายได้ดังนี้
+	\begin{itemize}[label={--}]
+		\item บรรทัดที่ 1 ตัวแปร btnSignOut ใช้ในการแสดงข้อมูลลิสต์รายการข่าวสาร
+		\item บรรทัดที่ 2 ตัวแปร auth ใช้จัดเก็บและยืนตัวตนของสมาชิก
+		\item บรรทัดที่ 3 ตัวแปร user ใช้จัดการข้อมูลของสมาชิก
+		\item บรรทัดที่ 4 ตัวแปร pd ใช้สำหรับเป็นแจ้งเตือน
+	\end{itemize}
+	\begin{figure}[H]
+		{\setstretch{1.0}\begin{lstlisting}
+btnSignOut.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        auth.signOut();
+        Intent intent = new Intent(Main2Activity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+        MainActivity.activityMain.finish();
+    }
+});
+
+findViewById(R.id.change_password_button).setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        startActivity(new Intent(getApplicationContext(), ForgetActivity.class).putExtra("Mode", 1));
+    }
+});
+
+findViewById(R.id.change_email_button).setOnClickListener(new View.OnClickListener() {		@Override            		public void onClick(View view) {
+        startActivity(new Intent(getApplicationContext(), ForgetActivity.class).putExtra("Mode", 2));
+    }
+});
+findViewById(R.id.delete_user_button).setOnClickListener(new View.OnClickListener() {
+ @Override            
+ public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ForgetActivity.class).putExtra("Mode", 3));
+            }
+        });
+    }
+			\end{lstlisting}}
+		\caption{โค้ดส่วนที่ใช้ในการสร้างเมนูนำทางหลักภายในคลาส Main2Activity}
+		\label{Fig:Main2Activity2}
+	\end{figure}
+	จากภาพที่ \ref{Fig:Main2Activity2} โค้ดส่วนที่ใช้ในการสร้างเมนูนำทางหลักภายในคลาส Main2Activity สามารถอธิบายได้ดังนี้
+	\begin{itemize}[label={--}]
+		\item บรรทัดที่ 1 ทำหน้าที่ดักจับอีเวนต์ดักจักเมื่อผู้ใช้ทำการกดปุ่ม SIGN OUT
+		\item บรรทัดที่ 2-10  เป็นการทำงานเมื่อผู้ใช้กดปุ่ม SIGN OUT  จะทำการออกจากระบบและทำลาย Activity ทั้งหมด
+		\item บรรทัดที่ 12-17 เป็นการทำงานเมื่อผู้ใช้กดปุ่ม CHANGE PASSWORD ระบบจะทำการส่งค่า Mode 1
+		\item บรรทัดที่ 19-22 เป็นการทำงานเมื่อผู้ใช้กดปุ่ม CHANGE Email ระบบจะทำการส่งค่า Mode 2
+		\item บรรทัดที่ 23-29 เป็นการทำงานเมื่อผู้ใช้กดปุ่ม Delete User ระบบจะทำการส่งค่า Mode 3
+	\end{itemize}
+	
+	\section{โครงสร้างของการสร้างหน้า DashboardFragment}
+	\begin{figure}[H]
+		{\setstretch{1.0}\begin{lstlisting}
+List<PieEntry> entries;
+PieChart pieChart;
+public   static ObjectAnimator progresanimator3, progresanimator2, progresanimator1;
+public   static ProgressBar progressBar3, progressBar2, progressBar1;
+	\end{lstlisting}}
+		\caption{ตัวแปรในคลาส DashboardFragment}
+		\label{Fig:DashboardFragment}
+	\end{figure}
+	จากภาพที่ \ref{Fig:DashboardFragment} ตัวแปรที่ประกาศขึ้นเพื่อใช้ในการทำงานของคลาส DashboardFragment สามารถอธิบายได้ดังนี้
+	\begin{itemize}[label={--}]
+		\item บรรทัดที่ 1 ตัวแปร entries ใช้สำหรับเก็บข้อมูลลงใน chart
+		\item บรรทัดที่ 2 ตัวแปร ObjectAnimator progresanimator3, progresanimator2, progresanimator1 ใช้ตั้งค่าทำให้ chart เคล่ือนไหว
+		\item บรรทัดที่ 3 ตัวแปร ProgressBar progressBar3, progressBar2, progressBar1 ใช้ตั้งค่า ProgressBar
+	\end{itemize}
+	\begin{figure}[H]
+		{\setstretch{1.0}\begin{lstlisting}
+Date currentTime = Calendar.getInstance().getTime();
+SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+SimpleDateFormat simplemonth = new SimpleDateFormat("MMM-yyyy", Locale.ENGLISH);
+SimpleDateFormat simpleyear = new SimpleDateFormat("ww-YYYY");
+final String month2 = simplemonth.format(currentTime);
+final String year = simpleyear.format(currentTime);
+final String date = df.format(currentTime);
+	
+			\end{lstlisting}}
+		\caption{โค้ดส่วนที่ใช้ในการสร้างโหนดวัน สัปดาห์และเดือนภายในคลาส Dashbord}
+		\label{Fig:Dashbord}
+	\end{figure}
+	จากภาพที่ \ref{Fig:Dashbord} โค้ดส่วนที่ใช้ในการสร้างเมนูนำทางหลักภายในคลาส Main2Activity สามารถอธิบายได้ดังนี้
+	\begin{itemize}[label={--}]
+		\item บรรทัดที่ 1  เป็นการดึงวันที่จากสมาร์ทโฟนมาใช้งาน
+		\item บรรทัดที่ 2  เป็นการเลือกรูปแบบวันที่ให้อยู่ในรูปแบบ วัน
+		\item บรรทัดที่ 3  เป็นการเลือกรูปแบบวันที่ให้อยู่ในรูปแบบ เดือน
+		\item บรรทัดที่ 4  เป็นการเลือกรูปแบบวันที่ให้อยู่ในรูปแบบ สัปดาห์
+		\item บรรทัดที่ 5-7 เป็นการแปลงวันที่ให้อยู่ในรูปแบบ String
+	\end{itemize}
+	\begin{figure}[H]
+		{\setstretch{1.0}\begin{lstlisting}
+if (status == null) {
+ addcal.child("showfooddata").child(user_id).child(date).addListenerForSingleValueEvent(new ValueEventListener() {
+	@Override
+		public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+		 if (dataSnapshot.getValue() != null) {
+			int gscal = Integer.parseInt(dataSnapshot.child("totalcal").getValue().toString());
+		if (gsto < 0) {
+		    gsto = 0;
+	}
+		pscal.setText(String.valueOf(gscal));
+
+		chart(gsto, gscal);
+		initday2(gsfat, gssod, gssug);
+	} else {
+		 DatabaseReference zerostatus = addcal.child("showfooddata").child(user_id).child(date);
+		 zerostatus.child("totalcal").setValue("0");
+		pscal.setText(pcal);
+		int gscal = Integer.parseInt(pcal);
+						 }
+		}
+	 });
+	 \end{lstlisting}}
+		\caption{โค้ดส่วนที่ใช้การตั้งค่า Database}
+		\label{Fig:Dashbordset}
+	\end{figure}
+	\newpage
+	จากภาพที่ \ref{Fig:Dashbordset} โโค้ดส่วนที่ใช้การตั้งค่า Database สามารถอธิบายได้ดังนี้
+	\begin{itemize}[label={--}]
+		\item บรรทัดที่ 1  เป็นการตรวจสอบว่าถ้า Database มีค่าว่าง
+		\item บรรทัดที่ 2  เป็นการบันทึกข้อมูลลงใน Database 
+		\item บรรทัดที่ 3  เป็นการเรียกใช้เมธอดชันจากคลาสที่ extends มา
+		\item บรรทัดที่ 4-11 เป็นการอ่านข้อมุลจาก Database ภายใต้เงื่อนไขว่า ถ้าDatabaseไม่มีค่าว่าง ให้ทำการอ่านข้อมูลและแสดงข้อมูล
+		\item บรรทัดที่ 12-13  ใช้สำหรับเรียกใช้เมธอดสร้าง Chart และ ProgressBar 
+		\item บรรทัดที่ 14-24 เป็นเงื่อนไขที่ Database มีค่าว่างให้ทำการตั้งค่า Database เป็น 0 แล้วให้ทำการแสดงข้อมูล
+	\end{itemize}
+		\begin{figure}[H]
+		{\setstretch{1.0}\begin{lstlisting}
+if (status == null) {
+ addcal.child("showfooddata").child(user_id).child(date).addListenerForSingleValueEvent(new ValueEventListener() {
+	@Override
+		public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+		 if (dataSnapshot.getValue() != null) {
+			int gscal = Integer.parseInt(dataSnapshot.child("totalcal").getValue().toString());
+		if (gsto < 0) {
+		    gsto = 0;
+	}
+		pscal.setText(String.valueOf(gscal));
+
+		chart(gsto, gscal);
+		initday2(gsfat, gssod, gssug);
+	} else {
+		 DatabaseReference zerostatus = addcal.child("showfooddata").child(user_id).child(date);
+		 zerostatus.child("totalcal").setValue("0");
+		pscal.setText(pcal);
+		int gscal = Integer.parseInt(pcal);
+						 }
+		}
+	 });
+	 \end{lstlisting}}
+		\caption{โค้ดส่วนที่ใช้ในการแสดงผลหน้าจอ Dashboard}
+		\label{Fig:Dashbordset2}
+	\end{figure}
+	\newpage
+	จากภาพที่ \ref{Fig:Dashbordset2} โค้ดส่วนที่ใช้ในการสร้างเมนูนำทางหลักภายในคลาส Main2Activity สามารถอธิบายได้ดังนี้
+	\begin{itemize}[label={--}]
+		\item บรรทัดที่ 1  เป็นการตรวจสอบว่าถ้า Database มีค่าว่าง
+		\item บรรทัดที่ 2  เป็นการบันทึกข้อมูลลงใน Database 
+		\item บรรทัดที่ 3  เป็นการเรียกใช้เมธอดชันจากคลาสที่ extends มา
+		\item บรรทัดที่ 4-11 เป็นการอ่านข้อมุลจาก Database ภายใต้เงื่อนไขว่า ถ้าDatabaseไม่มีค่าว่าง ให้ทำการอ่านข้อมูลและแสดงข้อมูล
+		\item บรรทัดที่ 12-13  ใช้สำหรับเรียกใช้เมธอดสร้าง Chart และ ProgressBar 
+		\item บรรทัดที่ 14-24 เป็นเงื่อนไขที่ Database มีค่าว่างให้ทำการตั้งค่า Database เป็น 0 แล้วให้ทำการแสดงข้อมูล
+	\end{itemize}
+
+
+
+	\section{โครงสร้างของการสร้างหน้า ScanFragment}
+	\begin{figure}[H]
+		{\setstretch{1.0}\begin{lstlisting}
+public CameraKitView cameraKitView;
+public static final String MODEL_PATH = "optimized_graph.lite";
+public static final String LABEL_PATH = "retrained_labels.txt";
+private Classifier classifier;
+			\end{lstlisting}}
+		\caption{ตัวแปรในคลาส ScanFragment}
+		\label{Fig:ScanFragment}
+	\end{figure}
+	จากภาพที่ \ref{Fig:ScanFragment} ตัวแปรที่ประกาศขึ้นเพื่อใช้ในการทำงานของคลาส ScanFragment สามารถอธิบายได้ดังนี้
+	\begin{itemize}[label={--}]
+		\item บรรทัดที่ 1 ตัวแปร cameraKitView; ใช้สำหรับสร้างกล้องเพื่อทำการถ่ายภาพ
+		\item บรรทัดที่ 2 ตัวแปร String MODEL\_PATH = optimized\_graph.lite;  ใช้สำหรับระบุที่อยู่และชื่อของไฟล์ lite
+		\item บรรทัดที่ 3 ตัวแปร String LABEL\_PATH = retrained\_labels.txt;  ใช้สำหรับระบุที่อยู่และชื่อของไฟล์ txt
+		\item บรรทัดที่ 4 ตัวแปร classifier ใช้สำหรับเรียกใช้คลาส classifier
+	\end{itemize}
+
+	\begin{figure}[H]
+		{\setstretch{1.0}\begin{lstlisting}
+cameraKitView.captureImage(new CameraKitView.ImageCallback() {
+	@Override
+	public void onImage(CameraKitView cameraKitView, final byte[] photo) {
+	Bitmap bitmap = BitmapFactory.decodeByteArray(photo, 0, photo.length);
+	bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
+	final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
+	tvLabel.setText(results.get(0).getTitle());
+	final String ss = tvLabel.getText().toString().trim();
+	DatabaseReference dbfood = FirebaseDatabase.getInstance().getReference();
+dbfood.child("foods").orderByKey().equalTo(ss).addListenerForSingleValueEvent(new ValueEventListener() {
+@Override
+	public void onDataChange(@NonNull DataSnapshot dataSnaps
+	Intent intent = new Intent(getActivity(), Food.class);
+	for (DataSnapshot ds : dataSnapshot.getChildren()) {
+		String ds1 = ds.getKey();
+	intent.putExtra("Name", dataSnapshot.child(ds1).child("Name").getValue().toString());
+	}
+getContext().startActivity(intent)
+}
+\end{lstlisting}}
+		\caption{โค้ดส่วนที่ใช้ในการสแกน}
+		\label{Fig:ScanFragment2}
+	\end{figure}
+	\newpage
+	จากภาพที่ \ref{Fig:ScanFragment2} โค้ดส่วนที่ใช้ในการสแกนสามารถอธิบายได้ดังนี้
+	\begin{itemize}[label={--}]
+		\item บรรทัดที่ 1  เป็นการใช้ฟังก์ชันถ่ายรูป
+		\item บรรทัดที่ 2  เป็นการเรียกใช้เมธอดชันจากคลาสที่ extends มา 
+		\item บรรทัดที่ 3-6 เป็นการทำการ Recognation เพื่อนำภาพที่ถ่ายไปจำแนก
+		\item บรรทัดที่ 7  เป็นการนำค่าที่ได้จากการจำแนกมาแสดง
+		\item บรรทัดที่ 9-14  เป็นการอ่านข้อมูลไปยัง Database โดยการนำค่าที่ได้จากการจำแนกไปเทียบกับค่า Key ใน Database 
+		\item บรรทัดที่ 15-19 เมื่อค่าจากากการจำแนกตรงกับค่า Key ให้ทำการส่งข้อมูลไปยัง คลาส Food แล้วทำการเปิดคลาส Food
+	\end{itemize}
+
+
+
+
+
+	\section{โครงสร้างของการสร้างหน้า AddfoodFragment}
+	\begin{figure}[H]
+		{\setstretch{1.0}\begin{lstlisting}
+ArrayList<Foodmanul> foodlist;
+FirebaseDatabase addfood = FirebaseDatabase.getInstance();
+			 
+			\end{lstlisting}}
+		\caption{ตัวแปรในคลาส AddfoodFragment}
+		\label{Fig:Addfood1}
+	\end{figure}
+	จากภาพที่ \ref{Fig:Addfood1} ตัวแปรที่ประกาศขึ้นเพื่อใช้ในการทำงานของคลาส AddfoodFragment สามารถอธิบายได้ดังนี้
+	\begin{itemize}[label={--}]
+		\item บรรทัดที่ 1 ตัวแปร cameraKitView; ใช้สำหรับสร้างกล้องเพื่อทำการถ่ายภาพ
+		\item บรรทัดที่ 2 ตัวแปร foodlist; จัดเก็บข้อมูลอาหาร
+	
+	\end{itemize}
+
+	\begin{figure}[H]
+		{\setstretch{1.0}\begin{lstlisting}
+addcal.addValueEventListener(new ValueEventListener() {
+@Override
+public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+	foodlist.clear();
+		int i = 0;
+		for (DataSnapshot foodSnapshot : dataSnapshot.getChildren()) {
+				foodlist.add(foodSnapshot.getValue(Foodmanul.class));
+				foodlist.get(i).setKey(foodSnapshot.getKey());
+				i++;
+		}
+	listViewfood.setLayoutManager(new LinearLayoutManager(getContext()));
+	listViewfood.setHasFixedSize(true);
+	FoodList adapter = new FoodList(getContext(),foodlist,putex);
+	listViewfood.setAdapter(adapter);
+}
+
+\end{lstlisting}}
+		\caption{โค้ดส่วนที่ใช้แสดงผลหน้าจอเพิ่มอาหาร}
+		\label{Fig:Addfood3}
+	\end{figure}
+	\newpage
+	จากภาพที่ \ref{Fig:Addfood3} โค้ดส่วนที่ใช้แสดงผลหน้าจอเพิ่มอาหาร สามารถอธิบายได้ดังนี้
+	\begin{itemize}[label={--}]
+		\item บรรทัดที่ 1  เป็นเมธอดการอ่านค่าจาก Database
+		\item บรรทัดที่ 2  เป็นการเรียกใช้เมธอดชันจากคลาสที่ extends มา 
+		\item บรรทัดที่ 3-10 อ่านข้อมูลจากคลาส Foodmanul
+		\item บรรทัดที่ 11-14 เป็นการนำข้อมูลที่ได้มาแปลงเป็นลิสต์และแสดงผล
+
+	\end{itemize}
+
+
+
+
+	\section{โครงสร้างของคลาส FoodList}
+	\begin{figure}[H]
+		{\setstretch{1.0}\begin{lstlisting}
+CardView cardViewfood;
+ArrayList<Foodmanul> foodlists;
+String user_id;
+
+			\end{lstlisting}}
+		\caption{ตัวแปรในคลาส FoodList}
+		\label{Fig:foodlist1}
+	\end{figure}
+	จากภาพที่ \ref{Fig:foodlist1} ตัวแปรที่ประกาศขึ้นเพื่อใช้ในการทำงานของคลาส FoodList สามารถอธิบายได้ดังนี้
+	\begin{itemize}[label={--}]
+		\item บรรทัดที่ 1 ตัวแปร cardViewfood;เป็นตัวแสดง​ CardView
+		\item บรรทัดที่ 2 ตัวแปร foodlist; ใช้จัดเก็บข้อมูลอาหารจากคลาส Foodmanul
+		\item บรรทัดที่ 3 ตัวแปร user\_id; ใช้เก็บค่า ID ของสมาชิก
+	\end{itemize}
+
+	\begin{figure}[H]
+		{\setstretch{1.0}\begin{lstlisting}
+Buutonupdaet.setOnClickListener(new View.OnClickListener() {
+	@Override
+	public void onClick(View v) {
+		String name = editTextName.getText().toString().trim();
+			String cal = editTextCal.getText().toString().trim();
+	if(TextUtils.isEmpty(name)){
+		editTextName.setError("enter name pls");
+	return;
+   }
+ 		updatefood(name,cal,Sug,Sod,Fat,key);
+				alertDialog.dismiss();
+	}
+		});
+	Buttondelete.setOnClickListener(new View.OnClickListener() {
+	@Override
+	public void onClick(View v) {
+		deletefood(key);
+			alertDialog.dismiss();
+			}
+		});
+\end{lstlisting}}
+		\caption{โค้ดการทำงานของคลาส Foodlist}
+		\label{Fig:foodlis1}
+	\end{figure}
+	\newpage
+	จากภาพที่ \ref{Fig:foodlis1} โค้ดการทำงานของคลาส Foodlistสามารถอธิบายได้ดังนี้
+	\begin{itemize}[label={--}]
+		\item บรรทัดที่ 1-5 เป็นการดักจับอีเวนต์เมื่อผู้ใช้ทำการกดปุ่ม update
+		\item บรรทัดที่ 6-9  เป็นการดักจับค่าว่างในกรณีที่สมาชิกไม่ทำการใส่ข้อความแล้วให้แสดงแจ้งเตือนกลับมา
+		\item บรรทัดที่ 10-13 เรียกใช้เมธอด updatefood แล้วทำการปิด Dialog
+		\item บรรทัดที่ 14-17  เป็นการดักจับอีเวนต์เมื่อผู้ใช้ทำการกดปุ่ม delete โดยเลือกลบที่ Key
+		\item บรรทัดที่ 18-20  ทำการปิด Dialog
+\end{itemize}
+
+
+\section{โครงสร้างของคลาส LoginActivity}
+\begin{figure}[H]
+	{\setstretch{1.0}\begin{lstlisting}
+private FirebaseAuth auth;
+private ProgressDialog PD;
+		\end{lstlisting}}
+	\caption{ตัวแปรในคลาส LoginActivity}
+	\label{Fig:LoginActivity}
+\end{figure}
+จากภาพที่ \ref{Fig:LoginActivity} ตัวแปรที่ประกาศขึ้นเพื่อใช้ในการทำงานของคลาส LoginActivity สามารถอธิบายได้ดังนี้
+\begin{itemize}[label={--}]
+	\item บรรทัดที่ 1 ตัวแปร auth; ใช้จัดเก็บและยืนตัวตนของสมาชิก
+	\item บรรทัดที่ 2 ตัวแปร PD;  ใช้แสดงข้อความให้กับสมาชิก 
+	
+\end{itemize}
+
+\begin{figure}[H]
+	{\setstretch{1.0}\begin{lstlisting}
+auth.signInWithEmailAndPassword(email, password)
+	.addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+	@Override
+			public void onComplete(@NonNull Task<AuthResult> task) {
+	if (task.isSuccessful()) {
+		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+	startActivity(intent);
+		finish();
+	} else {
+	Toast.makeText(
+	LoginActivity.this,
+	"Authentication Failed",
+Toast.LENGTH_LONG).show();
+Log.d("error", task.getException().toString());
+}
+	PD.dismiss();
+			}
+	});
+\end{lstlisting}}
+	\caption{โค้ดส่วนที่ใช้ในการเข้าสู่ระบบในคลาส LoginActivity}
+	\label{Fig:LoginActivity2}
+\end{figure}
+จากภาพที่ \ref{Fig:LoginActivity2} โค้ดส่วนที่ใช้ในการเข้าสู่ระบบในคลาส LoginActivity สามารถอธิบายได้ดังนี้
+\begin{itemize}[label={--}]
+	\item บรรทัดที่ 1-3 เป็นการตรวจสอบ Email และ Password ของผู้ใช้
+	\item บรรทัดที่ 4-8 เป็นการทำงานมนกรณีที่เข้าสู่ระบบสำเร็จจะทำการเรียกใช้คลาส MainActivity
+	\item บรรทัดที่ 9-18 เป็นการทำงานเมื่อเข้าสู่ระบบไม่สำเร็จจะทำการแสดงข้อความว่า Authentication Failed
+	
+\end{itemize}

@@ -1,0 +1,182 @@
+% Default language option is [thaithesis]. The other possible option is [engthesis].
+% Default format option is [ugrad]. Other possible options are [master,doctor].
+\documentclass[a4paper]{ubu}
+%\documentclass[a4paper,engthesis,master]{chula}
+
+% List all required packages here
+\usepackage{float}            % for floating figures
+\usepackage{amsmath}            % for math related environment
+\usepackage{amsfonts}           % fonts for math
+\usepackage{listings}           % for psuedocode, lines of codes
+\usepackage{caption}
+\usepackage[labelformat=simple]{subcaption}
+\renewcommand\thesubfigure{(\alph{subfigure})}    % for (a) in subcaption
+\usepackage{enumitem}
+\setlist{nolistsep,topsep=0pt}
+\usepackage{graphicx}
+\usepackage{wrapfig}            % for figures wrap inside text paragraph
+\usepackage{pdfpages}           % for including pdf pages
+\usepackage{verbatim}           % for block comment
+\usepackage{multicol}
+
+\usepackage{minted}
+
+\usepackage{standalone}         % for proposal text inclusion
+\usepackage{pgfgantt}           % for gantt chart
+\usepackage{titlesec}
+\titlespacing{\section}{0pt}{\parskip}{-\parskip}
+
+\usepackage{array}
+\usepackage{xcolor,colortbl}
+\usepackage{pdflscape}
+\usepackage{tabularx}
+\usepackage{makecell}
+
+\usepackage{rotating}
+
+\newcommand*\rot{\rotatebox{90}}
+
+% listings format
+\lstset{
+basicstyle=\ttfamily,
+numbers=left,
+numberstyle=\small,
+breaklines=true,
+xleftmargin=.1\linewidth,
+frame=single,
+columns=fullflexible,
+captionpos=b,
+showstringspaces=false
+}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning,arrows}
+
+%%------------------------------------------------------------
+%%-               SETTING THESIS PARAMETERS                  -
+%%------------------------------------------------------------
+\thesistitle                              % set the thesis tile (use {\wbr} for word break)
+{แอปพลิเคชันสแกนอาหาร} % Thai Title
+{Beingwellness}      % English title (auto upper case)
+
+\authortitle                            % set the title of the author, e.g., Mr., Miss, Dr. etc.
+{นาย}                                   % Thai Title of the author
+{Mr.}                                   % English Title of the author
+\thesisauthor                           % set the author name (must not include title (Mr., Miss, Dr., etc.)
+{พัทธดนย์ จัยสิน}                          % Author name in Thai
+{Pattadon Jaisin}                  % Author name in English
+
+\advisor                                               % set the advisor
+{อาจารย์ ดร.ไพชยนต์ คงไชย}               % Advisor name in Thai
+{ดร. ไพชยนต์ คงไชย}                          % Advisor name in Thai with abbrev. title
+{Phaichayon Kongchai, Ph.D.}  % Advisor name in English
+{PHAICHAYON KONGCHAI, Ph.D.}          % Advisor name in English with abbrev. title 
+                                                       % (Capital letters except Ph.D.))
+
+%% If the thesis has co-advisor, use this optional command
+%% Uncomment if necessary
+%\coadvisor
+%{อาจารย์ ดร.ภควรรณ ปักษี}  % Co-Advisor name in Thai
+%{อ. ดร.ภควรรณ ปักษี}  % Co-Advisor name in Thai with abbrev. title
+%{Pakawan Pucksee, Ph.D.}  % Co-Advisor name in English
+%{PAKAWAN PUCKSEE, Ph.D.}          % Co-Advisor name in English with abbrev. title 
+                                                       % (Capital letters except Ph.D.))
+
+\faculty                                % set the faculty
+{วิทยาศาสตร์}                          % name of the faculty in Thai
+{Science}                           % name of the faculty in English
+\department                             % set the department
+{คณิตศาสตร์ สถิติ และคอมพิวเตอร์}                      % name of the department in Thai
+{Mathematics Statistics and Computer}                  % name of the department in English
+\fieldofstudy                           % set the field of study (สาขาวิชา)
+{วิทยาการคอมพิวเตอร์}                      % Field in Thai
+{Computer Science}                  % Field in English
+\degree                                 % set the degree name
+{วิทยาศาสตร์บัณฑิต}                   % Degree name in Thai
+{Bachelor of Science}                  % Degree name in English
+\academicyear{2561}                     % Academic Year (in Thai Calendar)
+\authorid{5811403741}                   % ID of the author
+\subjID{1104494}							% Course ID for undergrad report
+\subjName								% course name
+{โครงงานวิทยาศาสตร์2}
+{Computer Project II}
+
+\deanname                               % name of the dean
+{ดร. ชัชวิน นามมั่น}                       % in Thai
+{Chatchawin Namman, Ph.D.}     % in English
+
+% Committee Block
+% Speficy the chair/committee/external committee in your selected language
+\committee                              % list of committee
+{
+\CommitteeBlockAdvisor                  % pre-defined value for advisor
+\CommitteeBlockCoAdvisor                % pre-defined value for co-advisor
+\CommitteeBlock{กรรมการ}{อาจารย์ วาสนา เหง้าเกษ } % examiner
+\CommitteeBlock{กรรมการ}{ผศ. เกรียงศักดิ์ ตรีประพิณ}  % examiner
+}
+
+%%-------------------------------------------------------------------------------
+%%-                               DOCUMENT                                      -
+%%-------------------------------------------------------------------------------
+\begin{document}
+% Thesis starts with Thai Cover
+\makethaicover
+\newpage
+
+% Followed by English Cover
+%\makeenglishcover
+%\newpage
+
+% Generate committee page
+\makecommittee
+\newpage
+
+% Acknowledgement Section
+\include{acknowledgement}
+\newpage
+
+% Thai Abstract Section
+\include{abstractthai}
+\newpage
+
+% English Abstract Section
+\include{abstractenglish}
+\newpage
+
+
+% Table of Content
+\tableofcontents        % generate table of content
+\newpage
+\listoftables           % generate list of tables
+\newpage
+\listoffigures          % generate list of figures
+\newpage
+
+% Main Content
+\include{1-introduction} 
+\include{2-background}
+\include{3-design}
+\include{4-implementation}
+\include{5-testing}
+\include{6-conclusion}
+
+
+\ULforem %%%
+\setlength{\bibhang}{1.5cm}
+% \bibliographystyle{chulanat} 
+\bibliographystyle{chulanat} 
+\bibliography{references} % speficy your bibtex file here (this example is MathCS.bib).
+\normalem
+
+
+% Appendix Section
+\numappendices{3}        % the number of appendices
+\startappendix
+\include{appendix1-setup}
+\include{appendix2-installation}
+\include{appendix3-manual}
+
+%% Biography Section
+\include{biography} % specify your biography file here (this example is biography.tex). 
+
+\end{document}
